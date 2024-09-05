@@ -1,0 +1,103 @@
+<DrawerClickableItem@MDNavigationDrawerItem>
+  focus_color: "#4B69FF"
+  text_color: "#4a4939"
+  icon_color: "#4a4939"
+  ripple_color: "#c5bdd2"
+  selected_color: "#0c6c4d"
+ScreenManager:
+  id: sm_main
+  Screen:
+    name:"screen_login"
+    id: screen_login
+    pwd_text:pwd_text
+    user_text:user_text
+    FitImage:
+      source: "image.png"
+      size_hint_y: .35
+      pos_hint: {"top": 1}
+      radius: 0, 0,"36dp", "36dp"
+    MDTextField:
+      id: user_text
+      pos_hint: {"center_y": .6 ,"center_x": .5}
+      size_hint_x: .6
+      hint_text: "Username"
+    MDTextField:
+      id: pwd_text
+      hint_text: "Password"
+      pos_hint: {"center_y": .52 ,"center_x": .5}
+      size_hint_x: .6
+      password: True
+    MDIconButton:
+      icon: "eye-off"
+      pos_hint: {"center_y": .52,"center_x": .78}
+      pos: pwd_text.width - self.width + dp(8), 0
+      theme_text_color: "Hint"
+      on_release:
+        self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+        pwd_text.password = False if pwd_text.password is True else True
+    MDRaisedButton:
+      style: "text"
+      text : "Login"
+      #icon: "login-variant"
+      md_bg_color: "#050AD1"
+      pos_hint: {"center_y": .40,"center_x": .5}
+      id: m_button
+      #size_hint_x: .3
+      elevation:2
+      on_press: app.check_pwd()
+  Screen:
+    name:"screen_app"
+    id: app_screens
+    MDBoxLayout:
+      orientation: 'vertical'
+      #Comment MDTopAppBar section to remove toolbar and still maintain full fucntionality
+      MDTopAppBar:
+        md_bg_color: "#050AD1"
+        #title: "Manager"
+        left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+        elevation: 0
+      #End MDTopAppBar section
+      ScreenManager:
+        id: sm_sub
+        Screen:
+          name:"screen_app_activity"
+          MDLabel:
+            text:"Daily news"
+            halign:"center"
+        Screen:
+          name:"screen_app_table"
+          MDLabel:
+            text:"Find something"
+            halign:"center"
+    MDNavigationDrawer:
+      id: nav_drawer
+      radius: (0, 16, 16, 0)
+      size_hint_x: .8
+      MDNavigationDrawerMenu:
+        MDNavigationDrawerLabel:
+          text: "Menu"
+        DrawerClickableItem:
+          icon: "gmail"
+          #right_text: "+99"
+          #text_right_color: "#4a4939"
+          text: "News"
+          on_release: sm_sub.current='screen_app_activity'
+        DrawerClickableItem:
+          icon: "send"
+          text: "Find"
+          on_release: sm_sub.current='screen_app_table'
+        MDNavigationDrawerDivider:
+        DrawerClickableItem:
+          icon: "logout"
+          text: ""
+          on_release: sm_main.current='screen_login'
+        #MDBoxLayout:
+        #  orientation: 'vertical'
+        #  Button:
+        #    text:"activity screen"
+        #    on_release:
+        #      sm_sub.current='screen_app_activity'
+        #  Button:
+        #    text:"table screen"
+        #    on_release:
+        #      sm_sub.current='screen_app_table'
