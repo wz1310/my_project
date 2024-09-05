@@ -1,0 +1,437 @@
+<odoo>
+  <record model="ir.ui.view" id="inherited_view_order_sale_form">
+    <field name="name">Inherited View Order Sale Form</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form" />
+    <field name="arch" type="xml">
+
+    <xpath expr="//field[@name='payment_term_id']" position="after">
+      <field name="down_pay"/>
+      <field name="stat_download" invisible="1"/>
+      <field name="customer_state" invisible="1"/>
+      <field name="customer_city" invisible="1"/>
+      <button string="OPEN PDF" type="object" name="action_wizard_commit" class="oe_highlight" invisible="1"/>
+    </xpath>
+
+  </field>
+  </record>
+
+  <record model="ir.ui.view" id="inherited_view_order_sale_tree">
+    <field name="name">Inherited View Order Sale Tree</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding" />
+    <field name="arch" type="xml">
+
+    <xpath expr="//field[@name='partner_id']" position="after">
+      <field name="customer_state" optional="hide"/>
+      <field name="customer_city" optional="hide"/>
+    </xpath>
+
+  </field>
+  </record>
+
+  <!-- //////////////////////////////////////report//////////////////////////////////// -->
+
+<template id="commitment_letter">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="header">
+                  <img class="img-fluid" t-att-src="'/web/image/%s/header.png' % (request.env['ir.config_parameter'].search([('key','=','header_commit')]).value)"/>
+                  <!-- <img class="img-fluid" src="/web/image/23391/header.png"/> -->
+                </div>
+                  <style>
+                    .td-2{
+                      text-align:center;
+                    }
+                  </style>
+                  <!-- <img t-att-src="'data:image/png;base64,%s' % to_text(docs.person_signature)"/> -->
+                  <table style="width:100%;">
+                    <tr>
+                      <td  style="text-align:center;font-size:18px;"><b><u>SURAT KOMITMEN PEMBAYARAN TEMPO</u></b></td>
+                    </tr>
+                    <tr>
+                      <td style="text-align:center;"><span t-field="docs.name"/></td>
+                    </tr>
+                    <tr>
+                      <td style="padding-top:25px;padding-left:80px;">Yang bertanda tangan di bawah ini :</td>
+                    </tr>
+                  </table>                  
+                  <div style="padding-bottom:20px;"/>
+
+                  <div style="margin-right:100px;">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="width:10%;padding-left:105px;">Nama</td>
+                      <td style="width:1%;padding-left:0px !important;padding-right:0px !important;">:</td>
+                      <td style="width:50%;padding-left:2px;text-transform: uppercase;"><span t-field="docs.user_id.name"/></td>
+                    </tr>
+                    <tr>
+                      <td style="width:10%;padding-left:105px;">Alamat</td>
+                      <td style="width:1%;padding-left:0px !important;padding-right:0px !important;">:</td>
+                      <td style="width:50%;padding-left:2px;text-transform: uppercase;">Pergudangan Indoserena blok C1, Waru – Sidoarjo</td>
+                    </tr>
+                  </table>
+                </div>
+                  <div style="padding-bottom:15px;"/>
+
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="padding-left:80px;">Selanjutnya orang tersebut diatas sebagai PIHAK PERTAMA (I)</td>
+                    </tr>
+                  </table>
+                  <div style="padding-bottom:15px;"/>
+
+                  <div style="margin-right:100px;">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="width:10%;padding-left:105px;">Nama</td>
+                      <td style="width:1%;padding-left:0px !important;padding-right:0px !important;">:</td>
+                      <td style="width:50%;padding-left:2px;text-transform: uppercase;"><span t-field="docs.partner_id.name"/></td>
+                    </tr>
+                    <tr>
+                      <td style="width:10%;padding-left:105px;">Alamat</td>
+                      <td style="width:1%;padding-left:0px !important;padding-right:0px !important;">:</td>
+                      <td style="width:50%;padding-left:2px;text-transform: uppercase;"><span t-field="docs.partner_id.street"/></td>
+                    </tr>
+                  </table>
+                </div>
+
+                  <div style="padding-bottom:15px;"/>
+
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="padding-left:80px;">Selanjutnya orang tersebut diatas sebagai PIHAK KEDUA (II)</td>
+                    </tr>
+                  </table>
+                  <div style="padding-bottom:15px;"/>
+
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="padding-left:80px;padding-right:80px;">Menyatakan bahwa pihak pertama (I) sebagai perwakilan dari Wujud Unggul, menjual Barang kepada Pihak Kedua (II), dengan rincian sebagai berikut :</td>
+                    </tr>
+                  </table>
+                  <div style="padding-bottom:15px;"/>
+                  <style>
+
+                        .table td {
+                            padding: 0px;
+                        }
+                        .th-0 {
+                            border-top: 1px solid black !important;
+                            border-bottom: 1px solid black !important;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                            text-align:center;
+                            padding-top: 0px !important;
+                            padding-bottom: 0px !important;
+                            padding-left: 0px !important;
+                            padding-right: 0px !important;
+                        }
+                        .th-0-1 {
+                            border-top: 1px solid black !important;
+                            border-bottom: none !important;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                            text-align:left;
+                        }
+                        .th-0-2 {
+                            border-top: 1px solid black !important;
+                            border-bottom: none !important;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                            padding-bottom: 10px !important;
+                        }
+
+                        .td-3 {
+                            border-top: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                            text-align:center;
+                        }
+
+                        .td-3-1 {
+                            border-top: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                        }
+
+                        .td-4 {
+                            border-top: 1px solid black;
+                            border-bottom: 1px solid black;
+                            border-left: 1px solid black;
+                            border-right: 1px solid black;
+                        }
+
+                        .td-4-1 {
+                            border-top: none !important;
+                            border-bottom: none !important;
+                            border-left: none !important;
+                            border-right: none !important;
+                            padding-left: 10px !important;
+                        }
+                    
+                  </style>
+                  <div style="margin-left:100px;margin-right:100px;">
+                  <table class="table" style="width:100%; border: 1px solid black;align:center;">
+                      <thead>
+                          <tr>
+                              <th class="th-0" style="width: 30%;">
+                                  Nama Barang
+                              </th>
+                              <th class="th-0" style="width: 8%;">
+                                  Qty
+                              </th>
+                              <th class="th-0" style="width: 10%;">
+                                  Satuan
+                              </th>
+                              <th class="th-0" style="width: 20%;">
+                                  Harga (Rp)
+                              </th>
+                              <th class="th-0" style="width: 10%;">
+                                  PPN
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <t t-set="idx" t-value="1"/>
+                          <t t-foreach="docs.order_line" t-as="line">
+                              <tr>
+                                  <!-- <td class="td-4 text-center">
+                                      <span t-esc="idx"/>
+                                  </td> -->
+                                  <td class="td-4 text-left" style="padding-left:2px;">
+                                      <span t-esc="line.name"/>
+                                  </td>
+                                  <td class="td-4 text-center">
+                                      <span t-esc="int(float(line.product_uom_qty))"/>
+                                  </td>
+                                  <td class="td-4 text-center">
+                                      <span t-esc="line.product_uom.name"/>
+                                  </td>
+                                  <td class="text-center td-4">
+                                      <span t-esc="'{0:,.0f}'.format(line.price_unit).replace(',', '.')"/>
+                                  </td>
+                                  <!-- <td class="text-right td-4">
+                                      <span t-esc="o.get_format_currency(line.display_discount)"/>
+                                  </td> -->
+                                  <td class="text-center td-4">
+                                      <span t-esc="line.tax_id.name"/>
+                                  </td>
+                              </tr>
+                              <t t-set="idx" t-value="idx + 1"/>
+                          </t>
+                              <tr>
+                                  <th style="border-top: 1px solid black;padding-top: 0px !important;padding-bottom: 0px !important;">
+                                    <b>Total</b>
+                                  </th>
+                                  <th style="border-top: 1px solid black;padding-top: 0px !important;padding-bottom: 0px !important;">
+                                  </th>
+                                  <th style="border-top: 1px solid black;padding-top: 0px !important;padding-bottom: 0px !important;">
+                                  </th>
+                                  <th style="border-top: 1px solid black;padding-top: 0px !important;padding-bottom: 0px !important;">
+                                  </th>
+                                  <th style="border-top: 1px solid black;border-left: 1px solid black;text-align:center;padding-top: 0px !important;padding-bottom: 0px !important;">
+                                    <span t-esc="'{0:,.0f}'.format(docs.amount_total).replace(',', '.')"/>
+                                  </th>
+                              </tr>
+                        </tbody>
+                    </table>
+                  </div>
+
+                  <div style="margin-left:140px;margin-right:140px;">
+                  <table class="table" style="width:100%; border: 1px solid black;align:center;">
+                      <thead>
+                          <tr>
+                              <th colspan="2" class="th-0-2">
+                                Keterangan Tambahan untuk Pembayaran :
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                              <tr>
+                                  <td class="td-4-1 text-left">
+                                      Harga Total
+                                  </td>
+                                  <td class="td-4-1 text-left">
+                                      <span t-esc="'{0:,.0f}'.format(docs.amount_total).replace(',', '.')"/>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td class="td-4-1 text-left">
+                                      Down Payment
+                                  </td>
+                                  <td class="td-4-1 text-left">
+                                      <span t-esc="'{0:,.0f}'.format(docs.down_pay).replace(',', '.')"/>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td class="td-4-1 text-left">
+                                      Hutang Tersisa
+                                  </td>
+                                  <td class="td-4-1 text-left">
+                                      <span t-esc="'{0:,.0f}'.format(docs.amount_total - docs.down_pay).replace(',', '.')"/>
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td class="td-4-1 text-left" style="padding-bottom: 10px !important;">
+                                      Tenor
+                                  </td>
+                                  <td class="td-4-1 text-left" style="padding-bottom: 10px !important;">
+                                      <span t-esc="docs.payment_term_id.name"/>
+                                  </td>
+                              </tr>
+                        </tbody>
+                    </table>
+                  </div>
+
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="padding-left:80px;padding-bottom: 10px !important;">Adapun dengan adanya Hutang tersebut, makan dengan ini PIHAK KEDUA (II) berkomitmen sbb  :</td>
+                    </tr>
+                  </table>
+
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">a)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Melunasi hutang dengan tempo sebagaimana keterangan diatas dengan masa pembayaran terhitung dari 1 bulan setelah dilakukan open invoice;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">b)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Selama masa perjanjian ini berjalan, Barang tersebut tidak dapat dipindah tangankan oleh PIHAK KEDUA (II) kepada PIHAK LAIN ;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">c)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">PIHAK KEDUA (II) Berkewajiban untuk memelihara dan merawat peralatan mesin tersebut ;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">d)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Apabila PIHAK KEDUA (II) tidak dapat memenuhi sebagian dari isi perjanjian ini maka PIHAK PERTAMA (I) dapat menarik Barang tersebut tanpa adanya tuntutan apapun dari PIHAK KEDUA (II) ;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">e)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Pada saat terjadi penarikan Barang, maka PIHAK PERTAMA (I) tidak bertanggung jawab jika terjadi kerusakan apapun di tempat PIHAK KEDUA (II) ;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">f)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Apabila PIHAK KEDUA (II) tidak bisa membayar sisa pembayaran Barang tersebut selama 3 bulan dan telah diberikan peringatan sebanyak tiga kali (3x), maka PIHAK PERTAMA (I) akan menarik kembali Barang tersebut tanpa ada tuntutan apapun dari PIHAK KEDUA (II) ;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">g)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Mengacu pada komitmen huruf (d) dan huruf (f) diatas, maka uang pembayaran DP dan atau uang pembayaran lain-lain yang sudah dibayarkan PIHAK KEDUA (II) kepada PIHAK PERTAMA (I) dinyatakan hangus ;</td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding-left:100px;padding-right:0px;text-align:justify;padding-bottom: 10px !important;">h)</td>
+                      <td style="padding-left: 4px !important;padding-right:100px;text-align:justify;padding-bottom: 10px !important;">Apabila PIHAK KEDUA (II) telah memenuhi komitmen perjanjian ini dan menyelesaikan pelunasan pembelian maka Barang tersebut menjadi hak milik PIHAK KEDUA (II).</td>
+                    </tr>
+
+                    <!-- <tr>
+                      <td style="padding-left:80px;padding-right:100px;text-align:justify;">Demikian surat komitmen ini dibuat dan disepakati bersama dengan kesadaran diri dan tanpa adanya paksaan dari pihak manapun.</td>
+                      <td></td>
+                    </tr> -->
+                  </table>
+                  <table style="width:100%;"><tr>
+                      <td style="padding-left:80px;padding-right:100px;text-align:justify;">Demikian surat komitmen ini dibuat dan disepakati bersama dengan kesadaran diri dan tanpa adanya paksaan dari pihak manapun.</td>
+                      <td></td>
+                    </tr>
+                  </table>
+
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="padding-bottom:30px;padding-top:60px;padding-left:80px;padding-right:80px;text-align:justify;">Surabaya, <span t-esc="docs.date_order.strftime('%d %B %Y')"/></td>
+                    </tr>
+                  </table>
+
+                  <div style="padding-left:150px;padding-right:150px;">
+                  <table style="width:100%;">
+                    <tr>
+                      <th class="th-0" style="width:50%;">TTD PIHAK PERTAMA</th>
+                      <th class="th-0" style="width:50%;">TTD PIHAK KEDUA</th>
+                    </tr>
+                    <tr>
+                      <td class="td-3"><br/>Ttd Digital<br/><span t-field="docs.user_id.name"/><br/><span t-esc="docs.date_order.strftime('%d %B %Y')"/><br/><br/><br/></td>
+                      <td class="td-3" style="color:#ebeae8;"><br/><br/>Ttd Manual<br/><br/><br/><br/></td>
+                      <!-- <td class="td-3"><br/><br/><br/><br/><br/><br/></td> -->
+                    </tr>
+                    <tr>
+                      <td class="td-3-1" style="padding-left:5px !important;text-transform: uppercase;">Nama : <span t-field="docs.user_id.name"/></td>
+                      <td class="td-3-1" style="padding-left:5px !important;text-transform: uppercase;">Nama : <span t-field="docs.partner_id.name"/></td>
+                    </tr>
+                  </table>
+                </div>
+
+                  <div style="padding-left:150px;padding-right:150px;">
+                  <table style="width:100%;">
+                    <tr>
+                      <td style="width:6%;font-size:13px;padding-left:0px !important;padding-right:0px !important;"><b>Note :</b></td>
+                      <td style="width:92%;font-size:13px;padding-left:0px !important;">Ttd digital ini dicetak melalui sistem ERP Odoo CV Wujud Unggul dan menggantikan ttd manual seharusnya</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div class="footer" style="font-size: 11px;">
+                    <!-- <img class="img-fluid" src="/web/image/23392/footers.png"/> -->
+                  <img class="img-fluid" t-att-src="'/web/image/%s/footers.png' % (request.env['ir.config_parameter'].search([('key','=','footer_commit')]).value)"/>
+                </div>
+                <!-- <span t-esc="docs.set_download()"/> -->
+            </t>
+        </t>
+    </template>
+
+    <report
+        string="Commitment Letter"
+        id="action_commit_letter"
+        model="sale.order"
+        report_type="qweb-pdf"
+        name="wu_sale_order_v1.commitment_letter"
+        file="wu_sale_order_v1.commitment_letter"
+        print_report_name="'Commitment Letter'"        
+        />
+
+        <!-- /////////////////////////////////////////////////wizard/////////////////////////////// -->
+    <record model="ir.ui.view" id="open_commit_wizard_view">
+        <field name="name">Show Commitment Letter Wizard</field>
+        <field name="model">show.commit.wizard</field>
+        <field name='priority'>10</field>
+        <field name="arch" type="xml">
+            <form string="Form">
+                      <field name="export_file_create_date" invisible="1"/>
+                      <field name="export_filename" invisible="1"/>
+                      <field name="export_file" string=" " no_label="1" widget="pdf_viewer" readonly="True" filename="export_filename" force_save="True"/>
+                <footer>
+                    <button string="Download" type="object" name="confirm" class="btn btn-warning"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- ////////////////////////////////////////call js///////////////////// -->
+    <template id="assets_backend" name="wu_sale_order_v1 assets" inherit_id="web.assets_backend"> 
+           <xpath expr="." position="inside"> 
+               <script type="text/javascript" src="/wu_sale_order_v1/static/src/js/close_wzr.js"></script> 
+           </xpath>
+    </template>
+
+    <!-- ////////////////////////POLINE///////////////////////// -->
+
+        <record id="wu_purchase_order_line_form_inherit" model="ir.ui.view">
+            <field name="name">wu_purchase_order_form_inherit</field>
+            <field name="model">purchase.order.line</field>
+            <field name="inherit_id" ref="purchase.purchase_order_line_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='account_analytic_id']" position="after">
+                    <field name="nrs_qty_received_fixed" />
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

@@ -1,0 +1,39 @@
+<odoo>
+    <record id="view_update_cs" model="ir.ui.view">
+            <field name="name">view.update.cs</field>
+            <field name="model">update.cs</field>
+            <field name="arch" type="xml">
+                <form string="Update" version="1">
+                    <sheet>
+                      <p>Are you sure to update city and state of this record ?</p>
+                </sheet>
+                    <footer>
+                        <button string='Confirm' name="btn_confirm" type="object"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+               </form>
+            </field>
+        </record>
+
+        <act_window
+            name="Update City/State"
+            id="action_update_cs"
+            res_model="update.cs"
+            binding_model="sale.order"
+            binding_views="list"
+            view_mode="form"
+            target="new"/>
+
+  <record model="ir.ui.view" id="inherited_view_line_sale">
+    <field name="name">Inherited Line Order Sale</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form" />
+    <field name="arch" type="xml">
+
+    <xpath expr="//form/sheet/notebook/page/field[@name='order_line']" position="before">
+      <button string="Delete Qty" type="object" name="delete_qty" confirm="Are you sure?"/>
+    </xpath>
+  </field>
+  </record>
+  
+</odoo>
